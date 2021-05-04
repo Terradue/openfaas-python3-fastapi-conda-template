@@ -47,4 +47,6 @@ COPY --chown=app:app function /home/app/function
 
 HEALTHCHECK --interval=5s CMD [ -e /tmp/.lock ] || exit 1
 
+WORKDIR /home/app/
+
 CMD ["fwatchdog"]
