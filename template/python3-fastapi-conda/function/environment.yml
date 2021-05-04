@@ -1,0 +1,10 @@
+name: env_openfaas
+channels:
+  - terradue
+  - conda-forge
+dependencies:
+  - python
+  - fastapi
+  - uvicorn
+  - shapely
+  - pystac
