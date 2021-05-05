@@ -28,7 +28,7 @@ Update the `environment.yml` file with additional conda `dependencies` you may n
 
 **Don't change the environment name**
 
-**Don't remove the `fastapi` and `uvicorn` dependencies, those are mandatory.
+**Don't remove the `fastapi` and `uvicorn` dependencies, those are mandatory.**
 
 ```yaml
 name: env_openfaas
