@@ -1,5 +1,7 @@
 # OpenFaas Python3 FastAPI using conda Template
 
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+
 A Python [FastAPI](https://github.com/tiangolo/fastapi) template that make use of the incubator project [of-watchdog](https://github.com/openfaas-incubator/of-watchdog) relying on a [conda](http:conda.io) environment.yml file for the Python dependencies.
 
 Templates available in this repository:
