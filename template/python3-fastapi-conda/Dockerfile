@@ -1,4 +1,5 @@
-FROM openfaas/of-watchdog:0.7.2 as watchdog
+FROM ghcr.io/openfaas/of-watchdog:0.9.11 as watchdog 
+
 FROM ubuntu:20.04
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
@@ -24,8 +25,8 @@ ADD function/environment.yml /tmp/environment.yml
 
 
 # Install basic commands and mamba
-RUN apt-get update                                                                                                          && \
-    apt-get install -y ca-certificates wget bash bzip2                                                                      && \
+RUN apt-get update -qy                                                                                                         && \
+    apt-get install -y --no-install-recommends ca-certificates wget bash bzip2                                                                      && \
     wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba --strip-components=1 && \
     ./micromamba shell init -s bash -p ~/micromamba                                                                         && \
     apt-get clean autoremove --yes                                                                                          && \
