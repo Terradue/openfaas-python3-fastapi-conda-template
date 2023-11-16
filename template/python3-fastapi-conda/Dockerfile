@@ -23,15 +23,14 @@ ENV PATH=$PATH:/home/app/.local/bin:/srv/conda/envs/env_openfaas/bin            
 
 ADD function/environment.yml /tmp/environment.yml
 
-
+COPY  --from=docker.io/mambaorg/micromamba:alpine /bin/micromamba /bin/micromamba
 # Install basic commands and mamba
-RUN apt-get update -qy                                                                                                         && \
-    apt-get install -y --no-install-recommends ca-certificates wget bash bzip2                                                                      && \
-    wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba --strip-components=1 && \
-    ./micromamba shell init -s bash -p ~/micromamba                                                                         && \
+RUN apt-get update -qy                                                                                                      && \
+    apt-get install -y --no-install-recommends ca-certificates wget bash bzip2                                              && \
+    micromamba shell init -s bash -p ~/micromamba                                                                           && \
     apt-get clean autoremove --yes                                                                                          && \
     rm -rf /var/lib/{apt,dpkg,cache,log}                                                                                    && \
-    cp ./micromamba /usr/bin                                                                                                && \
+    chmod +x /usr/bin/micromamba                                                                                            && \
     micromamba create -f /tmp/environment.yml                                                                               && \                                                              
     rm -fr /srv/conda/pkgs                                                                                                  && \
     rm -fr /tmp/*
