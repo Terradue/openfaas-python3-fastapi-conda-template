@@ -1,6 +1,7 @@
 FROM ghcr.io/openfaas/of-watchdog:0.9.11 as watchdog 
 
-FROM ubuntu:20.04
+#points to last lts
+FROM ubuntu:latest
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 
@@ -35,8 +36,12 @@ RUN apt-get update -qy                                                          
     rm -fr /srv/conda/pkgs                                                                                                  && \
     rm -fr /tmp/*
 
+#For opensearch-client
+RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb && \
+    dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
 
 USER app
+ENV LD_LIBRARY_PATH=/usr/local/ssl/lib:$LD_LIBRARY_PATH
 
 COPY --chown=app:app index.py  /home/app/index.py
 
