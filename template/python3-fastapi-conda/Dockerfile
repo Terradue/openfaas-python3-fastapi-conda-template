@@ -39,6 +39,7 @@ RUN apt-get update -qy                                                          
     apt-get clean autoremove --yes                                                                                          && \
     rm -rf /var/lib/{apt,dpkg,cache,log}                                                                                    && \
     chmod +x /usr/bin/micromamba                                                                                            && \
+    ls -la  &&  ls -la /home/app && find / -name assertions-toolkit                                                         && \
     micromamba create -f /home/app/environment.yml                                                                          && \                                                              
     rm -fr /srv/conda/pkgs                                                                                                  && \
     rm -fr /tmp/*
