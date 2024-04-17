@@ -22,9 +22,16 @@ ENV PATH=$PATH:/home/app/.local/bin:/srv/conda/envs/env_openfaas/bin            
     mode="http"                                                                         \
     upstream_url="http://127.0.0.1:8000"
 
-ADD function/environment.yml /tmp/environment.yml
-
 COPY  --from=docker.io/mambaorg/micromamba:alpine /bin/micromamba /bin/micromamba
+
+RUN mkdir -p /home/app/function                                                                                             && \
+    touch /home/app/function/__init__.py                                                                                    && \
+    chown -R app:app /home/app
+    
+COPY --chown=app:app function/environment.yml /home/app/environment.yml
+COPY --chown=app:app function /home/app/function
+COPY --chown=app:app index.py  /home/app/index.py
+
 # Install basic commands and mamba
 RUN apt-get update -qy                                                                                                      && \
     apt-get install -y --no-install-recommends ca-certificates wget bash bzip2                                              && \
@@ -32,7 +39,8 @@ RUN apt-get update -qy                                                          
     apt-get clean autoremove --yes                                                                                          && \
     rm -rf /var/lib/{apt,dpkg,cache,log}                                                                                    && \
     chmod +x /usr/bin/micromamba                                                                                            && \
-    micromamba create -f /tmp/environment.yml                                                                               && \                                                              
+    ls -la  &&  ls -la /home/app                                                                                            && \
+    micromamba create -f /home/app/environment.yml                                                                          && \                                                              
     rm -fr /srv/conda/pkgs                                                                                                  && \
     rm -fr /tmp/*
 
@@ -42,13 +50,6 @@ RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2
 
 USER app
 ENV LD_LIBRARY_PATH=/usr/local/ssl/lib:$LD_LIBRARY_PATH
-
-COPY --chown=app:app index.py  /home/app/index.py
-
-RUN mkdir -p /home/app/function                                                                                             && \
-    touch /home/app/function/__init__.py
-
-COPY --chown=app:app function /home/app/function
 
 HEALTHCHECK --interval=5s CMD [ -e /tmp/.lock ] || exit 1
 
