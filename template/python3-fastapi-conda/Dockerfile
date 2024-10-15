@@ -22,7 +22,7 @@ ENV PATH=$PATH:/home/app/.local/bin:/srv/conda/envs/env_openfaas/bin            
     mode="http"                                                                         \
     upstream_url="http://127.0.0.1:8000"
 
-COPY  --from=docker.io/mambaorg/micromamba:alpine /bin/micromamba /bin/micromamba
+COPY  --from=docker.io/mambaorg/micromamba:1-alpine /bin/micromamba /bin/micromamba
 
 RUN mkdir -p /home/app/function                                                                                             && \
     touch /home/app/function/__init__.py                                                                                    && \
